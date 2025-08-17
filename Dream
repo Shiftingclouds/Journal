@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Dream Tracker</title>
+    <meta name="description" content="Track your dreams, lucid experiences, shifting, and astral projection">
+    <meta name="theme-color" content="#1a0b3d">
+
+```
+<!-- PWA Manifest -->
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQXVyb3JhIERyZWFtIFRyYWNrZXIiLCJzaG9ydF9uYW1lIjoiRHJlYW1UcmFja2VyIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMxYTBiM2QiLCJ0aGVtZV9jb2xvciI6IiMxYTBiM2QiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lpSUhabGNuTnBiMjQ5SWpFeUxqQWlJSGh0Ykc1elBTSm9kSFJ3T2k4dmQzZDNMbmN6TG05eVp5OHlNREF3TDNOMlp5SStQR1JsWm5NK1BHeHBibVZoY2tkeVlXUnBaVzUwSUdsa1BTSmhkWEp2Y21GaUlpQjRNVDBpTUNVaUlIa3hQU0l3SlNJZ2VESXRQU0l4TURBU0ppQjVNajA5SWpBaUlHdGxlWE53YjI5dWMxMG9ZMmxqYkdVb0lEQStORGd3Y3lBcE1qWXdJRFlpSUhCc2V5c3ZJQzV3SUMwdE1BOGJJQzFQSUNSeGZpSWdkbWxsZGtKdmVEMGlNQ0F3SURRNE1DQTBPREFpUGp4emRHOXdJRzltWm5ObGREMGlNQ1VpSUhOMGIzQXRZMjlzYjNJOUlpTXhOemt6T1dNaUx6NDhjM1J2Y0NCdlptWnpaWFE5SWpjM0xqUXpKU0lnYzNSdmNDMWpiMnh2Y2owaUl6STBPREZpTkNJdkxqNDhjM1J2Y0NCdlptWnpaWFE5SWpFM01TNHhOU1VpSUhOMGIzQXRZMjlzYjNJOUlpTTJNaUJoT1RNaUx6NDhMMnhwYm1WaGNrZHlZV1JwWlc1MFBqeGphWEpqYkdVZ1kzZzlJakkwTUNJZ1kzazlJakkwTUNJZ2NqMGlNelF3SWlCbWFXeHNQU0oxY213b0kyRjFjbTl5WVdJcElpOCtQQzlrWldaelBqeG5QangwWlhoMElIZzlJalkwSWlCNVBTSTJOQ0lnWm1sc2JEMGlJM1ptWm1abVlTSWdabTl1ZEMxbVlXMXBiSGs5SWs5eVlta3RJQTU0YzJsdGNDUkVaV0ZxZERGYklERjFaS3RpTWpkNE5IRXpZa1V4SWlCbWIyNTBMWE5wZW1VOUlqRXhjSGdpSUhSbGVIUXRZVzVqYUc5eVBTSnRhV1JrYkdVaVBrUnlaV0Z0Y3p3dmRHVjRkRDQ4TDJjK1BDOXpkbWMrIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(45deg, #1a0b3d, #2d1b69, #4a2c85, #6b73ff);
+        background-size: 400% 400%;
+        animation: auroraGradient 15s ease infinite;
+        min-height: 100vh;
+        color: #ffffff;
+        overflow-x: hidden;
+    }
+
+    @keyframes auroraGradient {
+        0% { background-position: 0% 50%; }
+        25% { background-position: 100% 50%; }
+        50% { background-position: 100% 100%; }
+        75% { background-position: 0% 100%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .aurora-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 1;
+        animation: auroraShimmer 20s ease-in-out infinite;
+    }
+
+    @keyframes auroraShimmer {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 0.4; }
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+        max-width: 400px;
+        margin: 0 auto;
+        min-height: 100vh;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header {
+        padding: 20px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header h1 {
+        font-size: 24px;
+        font-weight: 300;
+        letter-spacing: 2px;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-tabs {
+        display: flex;
+        background: rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-tab {
+        flex: 1;
+        padding: 15px 5px;
+        text-align: center;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .nav-tab.active {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-tab:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .content {
+        padding: 20px;
+        min-height: calc(100vh - 140px);
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dream-form {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        font-size: 16px;
+        backdrop-filter: blur(10px);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .btn {
+        background: linear-gradient(45deg, #6b73ff, #9d50bb);
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(155, 80, 187, 0.4);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .dream-entry {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+    }
+
+    .dream-entry-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .dream-type-badge {
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .badge-regular { background: rgba(108, 122, 137, 0.3); }
+    .badge-lucid { background: rgba(52, 152, 219, 0.3); }
+    .badge-shifting { background: rgba(155, 89, 182, 0.3); }
+    .badge-astral { background: rgba(241, 196, 15, 0.3); }
+
+    .dream-date {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .dream-title {
+        font-weight: 500;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .dream-description {
+        font-size: 14px;
+        line-height: 1.4;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-number {
+        font-size: 24px;
+        font-weight: 600;
+        color: #6b73ff;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .empty-state h3 {
+        margin-bottom: 10px;
+        font-weight: 300;
+    }
+
+    .checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        accent-color: #6b73ff;
+    }
+
+    .checkbox-item label {
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .delete-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(231, 76, 60, 0.3);
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        color: white;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .delete-btn:hover {
+        background: rgba(231, 76, 60, 0.5);
+    }
+
+    .slider-container {
+        margin: 15px 0;
+    }
+
+    .slider {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.2);
+        outline: none;
+        -webkit-appearance: none;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #6b73ff;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #6b73ff;
+        cursor: pointer;
+        border: none;
+    }
+
+    .slider-value {
+        text-align: center;
+        margin-top: 5px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="aurora-overlay"></div>
+
+```
+<div class="container">
+    <div class="header">
+        <h1>✦ Aurora Dreams ✦</h1>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showTab('log')">Log Dream</button>
+        <button class="nav-tab" onclick="showTab('entries')">Entries</button>
+        <button class="nav-tab" onclick="showTab('stats')">Stats</button>
+    </div>
+
+    <div class="content">
+        <!-- Log Dream Tab -->
+        <div id="log-tab" class="tab-content active">
+            <div class="dream-form">
+                <div class="form-group">
+                    <label for="dreamType">Dream Type</label>
+                    <select id="dreamType" class="form-control">
+                        <option value="regular">Regular Dream</option>
+                        <option value="lucid">Lucid Dream</option>
+                        <option value="shifting">Reality Shifting</option>
+                        <option value="astral">Astral Projection</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dreamTitle">Dream Title</label>
+                    <input type="text" id="dreamTitle" class="form-control" placeholder="Give your dream a title...">
+                </div>
+
+                <div class="form-group">
+                    <label for="dreamDescription">Description</label>
+                    <textarea id="dreamDescription" class="form-control" placeholder="Describe your dream experience..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Clarity Level</label>
+                    <div class="slider-container">
+                        <input type="range" id="claritySlider" class="slider" min="1" max="10" value="5">
+                        <div class="slider-value">Clarity: <span id="clarityValue">5</span>/10</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Emotional Intensity</label>
+                    <div class="slider-container">
+                        <input type="range" id="emotionSlider" class="slider" min="1" max="10" value="5">
+                        <div class="slider-value">Intensity: <span id="emotionValue">5</span>/10</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dreamTags">Tags/Elements</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tag-flying" value="flying">
+                            <label for="tag-flying">Flying</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tag-water" value="water">
+                            <label for="tag-water">Water</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tag-people" value="people">
+                            <label for="tag-people">People</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tag-animals" value="animals">
+                            <label for="tag-animals">Animals</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tag-nightmare" value="nightmare">
+                            <label for="tag-nightmare">Nightmare</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tag-prophetic" value="prophetic">
+                            <label for="tag-prophetic">Prophetic</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="shiftingFields" style="display: none;">
+                    <label for="desiredReality">Desired Reality</label>
+                    <input type="text" id="desiredReality" class="form-control" placeholder="Which reality did you shift to?">
+                    
+                    <label for="shiftingMethod" style="margin-top: 15px;">Method Used</label>
+                    <input type="text" id="shiftingMethod" class="form-control" placeholder="Raven method, Julia method, etc.">
+                </div>
+
+                <div class="form-group" id="astralFields" style="display: none;">
+                    <label for="astralLocation">Location Visited</label>
+                    <input type="text" id="astralLocation" class="form-control" placeholder="Where did you travel in the astral plane?">
+                    
+                    <label for="astralDuration" style="margin-top: 15px;">Duration (minutes)</label>
+                    <input type="number" id="astralDuration" class="form-control" placeholder="How long were you out of body?">
+                </div>
+
+                <button class="btn" onclick="saveDream()">Save Dream</button>
+            </div>
+        </div>
+
+        <!-- Entries Tab -->
+        <div id="entries-tab" class="tab-content">
+            <div id="dreamEntries">
+                <!-- Dream entries will be populated here -->
+            </div>
+        </div>
+
+        <!-- Stats Tab -->
+        <div id="stats-tab" class="tab-content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalDreams">0</div>
+                    <div class="stat-label">Total Dreams</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="lucidDreams">0</div>
+                    <div class="stat-label">Lucid Dreams</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="shiftingAttempts">0</div>
+                    <div class="stat-label">Shifting</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="astralProjections">0</div>
+                    <div class="stat-label">Astral</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <h3 style="margin-bottom: 15px;">Dream Frequency</h3>
+                <div id="frequencyChart">
+                    <p style="color: rgba(255, 255, 255, 0.6);">Start logging dreams to see your patterns!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize app
+    let dreams = JSON.parse(localStorage.getItem('dreamTrackerData')) || [];
+
+    // Tab switching
+    function showTab(tabName) {
+        // Remove active class from all tabs and content
+        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        // Add active class to selected tab and content
+        event.target.classList.add('active');
+        document.getElementById(tabName + '-tab').classList.add('active');
+        
+        if (tabName === 'entries') {
+            displayDreamEntries();
+        } else if (tabName === 'stats') {
+            updateStats();
+        }
+    }
+
+    // Handle dream type changes
+    document.getElementById('dreamType').addEventListener('change', function() {
+        const shiftingFields = document.getElementById('shiftingFields');
+        const astralFields = document.getElementById('astralFields');
+        
+        // Hide all special fields first
+        shiftingFields.style.display = 'none';
+        astralFields.style.display = 'none';
+        
+        // Show relevant fields based on type
+        if (this.value === 'shifting') {
+            shiftingFields.style.display = 'block';
+        } else if (this.value === 'astral') {
+            astralFields.style.display = 'block';
+        }
+    });
+
+    // Slider value updates
+    document.getElementById('claritySlider').addEventListener('input', function() {
+        document.getElementById('clarityValue').textContent = this.value;
+    });
+
+    document.getElementById('emotionSlider').addEventListener('input', function() {
+        document.getElementById('emotionValue').textContent = this.value;
+    });
+
+    // Save dream function
+    function saveDream() {
+        const dreamType = document.getElementById('dreamType').value;
+        const dreamTitle = document.getElementById('dreamTitle').value;
+        const dreamDescription = document.getElementById('dreamDescription').value;
+        const clarity = document.getElementById('claritySlider').value;
+        const emotion = document.getElementById('emotionSlider').value;
+        
+        if (!dreamTitle.trim()) {
+            alert('Please enter a dream title');
+            return;
+        }
+
+        // Get selected tags
+        const tags = [];
+        document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked').forEach(checkbox => {
+            tags.push(checkbox.value);
+        });
+
+        const dream = {
+            id: Date.now(),
+            type: dreamType,
+            title: dreamTitle,
+            description: dreamDescription,
+            clarity: parseInt(clarity),
+            emotion: parseInt(emotion),
+            tags: tags,
+            date: new Date().toISOString(),
+            dateFormatted: new Date().toLocaleDateString()
+        };
+
+        // Add type-specific fields
+        if (dreamType === 'shifting') {
+            dream.desiredReality = document.getElementById('desiredReality').value;
+            dream.shiftingMethod = document.getElementById('shiftingMethod').value;
+        } else if (dreamType === 'astral') {
+            dream.astralLocation = document.getElementById('astralLocation').value;
+            dream.astralDuration = document.getElementById('astralDuration').value;
+        }
+
+        dreams.unshift(dream); // Add to beginning of array
+        localStorage.setItem('dreamTrackerData', JSON.stringify(dreams));
+        
+        // Clear form
+        clearForm();
+        
+        // Show success message
+        alert('Dream saved successfully!');
+    }
+
+    function clearForm() {
+        document.getElementById('dreamTitle').value = '';
+        document.getElementById('dreamDescription').value = '';
+        document.getElementById('claritySlider').value = 5;
+        document.getElementById('emotionSlider').value = 5;
+        document.getElementById('clarityValue').textContent = '5';
+        document.getElementById('emotionValue').textContent = '5';
+        document.getElementById('dreamType').value = 'regular';
+        document.getElementById('shiftingFields').style.display = 'none';
+        document.getElementById('astralFields').style.display = 'none';
+        document.getElementById('desiredReality').value = '';
+        document.getElementById('shiftingMethod').value = '';
+        document.getElementById('astralLocation').value = '';
+        document.getElementById('astralDuration').value = '';
+        
+        // Clear checkboxes
+        document.querySelectorAll('.checkbox-group input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    }
+
+    function displayDreamEntries() {
+        const container = document.getElementById('dreamEntries');
+        
+        if (dreams.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <h3>No dreams logged yet</h3>
+                    <p>Start tracking your dreams to see them here!</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = dreams.map(dream => `
+            <div class="dream-entry">
+                <button class="delete-btn" onclick="deleteDream(${dream.id})">×</button>
+                <div class="dream-entry-header">
+                    <span class="dream-type-badge badge-${dream.type}">${dream.type}</span>
+                    <span class="dream-date">${dream.dateFormatted}</span>
+                </div>
+                <div class="dream-title">${dream.title}</div>
+                <div class="dream-description">${dream.description}</div>
+                ${dream.tags.length > 0 ? `<div style="margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.6);">Tags: ${dream.tags.join(', ')}</div>` : ''}
+                <div style="margin-top: 10px; font-size: 12px; color: rgba(255,255,255,0.6);">
+                    Clarity: ${dream.clarity}/10 • Intensity: ${dream.emotion}/10
+                </div>
+                ${dream.desiredReality ? `<div style="margin-top: 5px; font-size: 12px; color: rgba(255,255,255,0.6);">Reality: ${dream.desiredReality}</div>` : ''}
+                ${dream.astralLocation ? `<div style="margin-top: 5px; font-size: 12px; color: rgba(255,255,255,0.6);">Location: ${dream.astralLocation}</div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    function deleteDream(dreamId) {
+        if (confirm('Are you sure you want to delete this dream?')) {
+            dreams = dreams.filter(dream => dream.id !== dreamId);
+            localStorage.setItem('dreamTrackerData', JSON.stringify(dreams));
+            displayDreamEntries();
+            updateStats();
+        }
+    }
+
+    function updateStats() {
+        const totalDreams = dreams.length;
+        const lucidDreams = dreams.filter(d => d.type === 'lucid').length;
+        const shiftingAttempts = dreams.filter(d => d.type === 'shifting').length;
+        const astralProjections = dreams.filter(d => d.type === 'astral').length;
+
+        document.getElementById('totalDreams').textContent = totalDreams;
+        document.getElementById('lucidDreams').textContent = lucidDreams;
+        document.getElementById('shiftingAttempts').textContent = shiftingAttempts;
+        document.getElementById('astralProjections').textContent = astralProjections;
+
+        // Display frequency chart
+        const frequencyChart = document.getElementById('frequencyChart');
+        if (totalDreams === 0) {
+            frequencyChart.innerHTML = '<p style="color: rgba(255, 255, 255, 0.6);">Start logging dreams to see your patterns!</p>';
+            return;
+        }
+
+        // Calculate dreams per week for the last month
+        const lastMonth = new Date();
+        lastMonth.setMonth(lastMonth.getMonth() - 1);
+        
+        const recentDreams = dreams.filter(dream => new Date(dream.date) >= lastMonth);
+        const dreamsPerWeek = (recentDreams.length / 4).toFixed(1);
+
+        // Calculate average clarity and emotion
+        const avgClarity = totalDreams > 0 ? (dreams.reduce((sum, d) => sum + d.clarity, 0) / totalDreams).toFixed(1) : 0;
+        const avgEmotion = totalDreams > 0 ? (dreams.reduce((sum, d) => sum + d.emotion, 0) / totalDreams).toFixed(1) : 0;
+
+        // Most common tags
+        const tagCounts = {};
+        dreams.forEach(dream => {
+            dream.tags.forEach(tag => {
+                tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+            });
+        });
+        
+        const topTags = Object.entries(tagCounts)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 3)
+            .map(([tag, count]) => `${tag} (${count})`)
+            .join(', ');
+
+        frequencyChart.innerHTML = `
+            <div style="text-align: left;">
+                <p><strong>Dreams per week:</strong> ${dreamsPerWeek}</p>
+                <p><strong>Average clarity:</strong> ${avgClarity}/10</p>
+                <p><strong>Average intensity:</strong> ${avgEmotion}/10</p>
+                ${topTags ? `<p><strong>Top tags:</strong> ${topTags}</p>` : ''}
+                <div style="margin-top: 15px;">
+                    <div style="background: rgba(52, 152, 219, 0.3); height: 8px; border-radius: 4px; overflow: hidden;">
+                        <div style="background: #3498db; height: 100%; width: ${totalDreams > 0 ? (lucidDreams / totalDreams) * 100 : 0}%; transition: width 0.3s ease;"></div>
+                    </div>
+                    <p style="font-size: 12px; margin-top: 5px; color: rgba(255,255,255,0.6);">Lucid dream rate: ${totalDreams > 0 ? ((lucidDreams / totalDreams) * 100).toFixed(1) : 0}%</p>
+                </div>
+            </div>
+        `;
+    }
+
+    // Service Worker registration for PWA functionality
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('data:text/javascript;base64,Y29uc3QgQ0FDSEVfTkFNRSA9ICdhdXJvcmEtZHJlYW0tdHJhY2tlci12MSc7CmNvbnN0IHVybHNUb0NhY2hlID0gWwogICcvJywKXTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignaW5zdGFsbCcsIGZ1bmN0aW9uKGV2ZW50KSB7CiAgZXZlbnQud2FpdFVudGlsKAogICAgY2FjaGVzLm9wZW4oQ0FDSEVfTkFNRSkKICAgICAgLnRoZW4oZnVuY3Rpb24oY2FjaGUpIHsKICAgICAgICByZXR1cm4gY2FjaGUuYWRkQWxsKHVybHNUb0NhY2hlKTsKICAgICAgfSkKICApOwp9KTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignZmV0Y2gnLCBmdW5jdGlvbihldmVudCkgewogIGV2ZW50LnJlc3BvbmRXaXRoKAogICAgY2FjaGVzLm1hdGNoKGV2ZW50LnJlcXVlc3QpCiAgICAgIC50aGVuKGZ1bmN0aW9uKHJlc3BvbnNlKSB7CiAgICAgICAgaWYgKHJlc3BvbnNlKSB7CiAgICAgICAgICByZXR1cm4gcmVzcG9uc2U7CiAgICAgICAgfQogICAgICAgIHJldHVybiBmZXRjaChldmVudC5yZXF1ZXN0KTsKICAgICAgfSkKICApOwp9KTs=')
+            .then(function(registration) {
+                console.log('ServiceWorker registration successful');
+            }, function(err) {
+                console.log('ServiceWorker registration failed');
+            });
+        });
+    }
+
+    // Initialize app on load
+    window.addEventListener('load', function() {
+        updateStats();
+        
+        // Add install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button or banner
+            const installBanner = document.createElement('div');
+            installBanner.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+                background: rgba(107, 115, 255, 0.9);
+                padding: 15px;
+                border-radius: 10px;
+                color: white;
+                text-align: center;
+                z-index: 1000;
+                font-size: 14px;
+            `;
+            installBanner.innerHTML = `
+                <div>Install Aurora Dreams for the best experience!</div>
+                <button onclick="installApp()" style="background: white; color: #6b73ff; border: none; padding: 8px 16px; border-radius: 5px; margin-top: 10px; cursor: pointer;">Install</button>
+                <button onclick="this.parentElement.remove()" style="background: transparent; color: white; border: 1px solid white; padding: 8px 16px; border-radius: 5px; margin: 10px 0 0 10px; cursor: pointer;">Later</button>
+            `;
+            document.body.appendChild(installBanner);
+            
+            window.installApp = function() {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                    installBanner.remove();
+                });
+            };
+        });
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey || e.metaKey) {
+            switch(e.key) {
+                case 's':
+                    e.preventDefault();
+                    saveDream();
+                    break;
+                case '1':
+                    e.preventDefault();
+                    showTab('log');
+                    break;
+                case '2':
+                    e.preventDefault();
+                    showTab('entries');
+                    break;
+                case '3':
+                    e.preventDefault();
+                    showTab('stats');
+                    break;
+            }
+        }
+    });
+
+    // Auto-save draft functionality
+    let autoSaveTimer;
+    function autoSaveDraft() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+            const draft = {
+                title: document.getElementById('dreamTitle').value,
+                description: document.getElementById('dreamDescription').value,
+                type: document.getElementById('dreamType').value,
+                clarity: document.getElementById('claritySlider').value,
+                emotion: document.getElementById('emotionSlider').value
+            };
+            if (draft.title || draft.description) {
+                localStorage.setItem('dreamDraft', JSON.stringify(draft));
+            }
+        }, 1000);
+    }
+
+    // Load draft on page load
+    function loadDraft() {
+        const draft = JSON.parse(localStorage.getItem('dreamDraft') || '{}');
+        if (draft.title) {
+            document.getElementById('dreamTitle').value = draft.title;
+            document.getElementById('dreamDescription').value = draft.description;
+            document.getElementById('dreamType').value = draft.type || 'regular';
+            document.getElementById('claritySlider').value = draft.clarity || 5;
+            document.getElementById('emotionSlider').value = draft.emotion || 5;
+            document.getElementById('clarityValue').textContent = draft.clarity || 5;
+            document.getElementById('emotionValue').textContent = draft.emotion || 5;
+        }
+    }
+
+    // Clear draft when dream is saved
+    function clearDraft() {
+        localStorage.removeItem('dreamDraft');
+    }
+
+    // Add auto-save listeners
+    ['dreamTitle', 'dreamDescription', 'dreamType'].forEach(id => {
+        document.getElementById(id).addEventListener('input', autoSaveDraft);
+    });
+
+    ['claritySlider', 'emotionSlider'].forEach(id => {
+        document.getElementById(id).addEventListener('change', autoSaveDraft);
+    });
+
+    // Load draft on startup
+    loadDraft();
+
+    // Update saveDream function to clear draft
+    const originalSaveDream = saveDream;
+    saveDream = function() {
+        originalSaveDream();
+        clearDraft();
+    };
+</script>
+```
+
+</body>
+</html>
